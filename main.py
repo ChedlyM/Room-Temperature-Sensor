@@ -7,14 +7,17 @@ import _thread
 
 def publisherStart():
   #Création de capteurs pour la prise de température et envoi des températures au brocker
-  numNodes = 3 # Nombre de capteurs dans la chambre
-  interval = 5 # Envoi des données chaque seconde (1)
+  numNodes = 1 # Nombre de capteurs dans la chambre
+  interval = 5 # Envoi des données chaque seconde (5)
   objs = Publisher.generateNodes(numNodes) # génération d'un tableau d'objets temporaires
-  while True:
+  c=1
+  #Tester le programme avec un certain nombre de traitement (10 fois par exemple)
+  while(c<10):
     for i in range(numNodes):
       data = Publisher.formatTemperature(i) # Création d'une chaine Json
       objs[i].publish("/readings/temperature", json.dumps(data)) # Publication des données avec mqtt
     time.sleep(interval)
+    c=c+1
   for client in objs:
     client.loop_stop(); client.disconnect()
 

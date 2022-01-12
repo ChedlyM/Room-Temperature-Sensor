@@ -1,10 +1,8 @@
 import random
-import time
 import paho.mqtt.client as mqtt
-import json
-import numpy
 
-minRange = 20.0 # min temp range for temp. simulation
+
+minRange = 18.0 # min temp range for temp. simulation
 maxRange = 27.0 # max temp range for temp. simulation
 
 indexCounter = 0

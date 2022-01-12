@@ -2,11 +2,11 @@ import json
 import paho.mqtt.client as mqtt
 
 
-tempArr = [None] * 3 # Tableau pour sauvegarder les moyennes des capteurs
+tempArr = [None] * 1 # Tableau pour sauvegarder les moyennes des capteurs
 average = ""
 setPoint = 22 # Température désirée
 tempControlArr = [] # Variable pour sauvegarder les températures
-sampingInterval = 3 # Intervalle par defaut avant d'effectuer les calculs
+sampingInterval = 1 # Intervalle par defaut avant d'effectuer les calculs
 
 def on_connect(client, userdata, rc,properties=None):
     print("Connected with result code "+str(rc))
@@ -40,8 +40,11 @@ def tempControl(client, currTemperature):
         del tempControlArr[:]
 
         if((currTemperature >= 26) or(currTemperature <= 20) ): # Si température anormale, data['level']=1
-            data['level'] = 1
+            data['niveau'] = 1
+            print("alerte la temperature a dépassé le seuil")
         else:
-            data['level'] = 0
+            print("Temperature normale")
+            data['niveau'] = 0
+        data['tempMoyenne']=currTemperature
         print(json.dumps(data))
         client.publish("/actuators/room-1", json.dumps(data)) # Publication des données avec MQTT
